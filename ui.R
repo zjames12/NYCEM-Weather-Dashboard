@@ -16,14 +16,19 @@ body <- dashboardBody(
     column(9, 
            # leafletOutput(outputId = "mapPlot")
            box(width = NULL, solidHeader = TRUE,
-               leafletOutput("mapPlot", height = 500)
+               formattableOutput("centralWeather"),
+               dygraphOutput("centralWeatherHourly",width = "90%", height = "110px")
            ),
+           box(width = NULL, solidHeader = TRUE,
+               leafletOutput("mapPlot", height = 500)
+           )
     ),
     column(3, 
            box(width = NULL, status = "warning",
                selectInput("layer", "Layer", c("Temperature", "Relative Humidity", "Max. Temperature", "Min. Temperature")),
-               sliderInput("num2", "Time", value = round(Sys.time(), units="hours"), min = round(Sys.time(), units="hours"),
-                           max = round(Sys.time(), units="hours") + hours(6), step = 3600)
+               # sliderInput("num2", "Time", value = round(Sys.time(), units="hours"), min = round(Sys.time(), units="hours"),
+               #             max = round(Sys.time(), units="hours") + hours(6), step = 3600)
+               selectInput("mapType", "Map Type", c("Default", "Night", "Satellite")),
            ),
            # textAreaInput("story", "Additional Details", rows = 4)
            # sliderInput("num2", "Number two", value = round(Sys.time(), units="hours"), min = round(Sys.time(), units="hours"),
