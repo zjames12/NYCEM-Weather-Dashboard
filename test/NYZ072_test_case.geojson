@@ -1,0 +1,175 @@
+{
+    "@context": [
+        "https://geojson.org/geojson-ld/geojson-context.jsonld",
+        {
+            "@version": "1.1",
+            "wx": "https://api.weather.gov/ontology#",
+            "@vocab": "https://api.weather.gov/ontology#"
+        }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.ed0aec40d7c1dadc33d576a0f272dc4bade34421.001.1",
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -74.150000000000006,
+                            40.670000000000002
+                        ],
+                        [
+                            -74.040000000000006,
+                            40.789999999999999
+                        ],
+                        [
+                            -74.090000000000003,
+                            40.920000000000002
+                        ],
+                        [
+                            -74.069999899999999,
+                            40.950000000000003
+                        ],
+                        [
+                            -73.950000000000003,
+                            41.020000000000003
+                        ],
+                        [
+                            -73.890000000000001,
+                            41
+                        ],
+                        [
+                            -73.890000000000001,
+                            41.060000000000002
+                        ],
+                        [
+                            -73.620000000000005,
+                            41.25
+                        ],
+                        [
+                            -73.560000000000002,
+                            41.130000000000003
+                        ],
+                        [
+                            -73.650000000000006,
+                            40.970000000000006
+                        ],
+                        [
+                            -73.77000000000001,
+                            40.860000000000007
+                        ],
+                        [
+                            -73.890000000000015,
+                            40.790000000000006
+                        ],
+                        [
+                            -73.910000000000011,
+                            40.800000000000004
+                        ],
+                        [
+                            -73.959999900000014,
+                            40.740000000000002
+                        ],
+                        [
+                            -74.090000000000018,
+                            40.649999999999999
+                        ],
+                        [
+                            -74.130000000000024,
+                            40.640000000000001
+                        ],
+                        [
+                            -74.150000000000006,
+                            40.670000000000002
+                        ]
+                    ]
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.ed0aec40d7c1dadc33d576a0f272dc4bade34421.001.1",
+                "@type": "wx:Alert",
+                "id": "urn:oid:2.49.0.1.840.0.ed0aec40d7c1dadc33d576a0f272dc4bade34421.001.1",
+                "areaDesc": "Southern Fairfield; Hudson; Eastern Bergen; Northern Westchester; Southern Westchester; New York (Manhattan); Bronx",
+                "geocode": {
+                    "SAME": [
+                        "009001",
+                        "034017",
+                        "034003",
+                        "036119",
+                        "036061",
+                        "036005"
+                    ],
+                    "UGC": [
+                        "CTZ009",
+                        "NJZ006",
+                        "NJZ104",
+                        "NYZ070",
+                        "NYZ071",
+                        "NYZ072",
+                        "NYZ073"
+                    ]
+                },
+                "affectedZones": [
+                    "https://api.weather.gov/zones/forecast/CTZ009",
+                    "https://api.weather.gov/zones/forecast/NJZ006",
+                    "https://api.weather.gov/zones/forecast/NJZ104",
+                    "https://api.weather.gov/zones/forecast/NYZ070",
+                    "https://api.weather.gov/zones/forecast/NYZ071",
+                    "https://api.weather.gov/zones/forecast/NYZ072",
+                    "https://api.weather.gov/zones/forecast/NYZ073"
+                ],
+                "references": [],
+                "sent": "2023-06-14T13:15:00-04:00",
+                "effective": "2023-06-14T13:15:00-04:00",
+                "onset": "2023-06-14T13:15:00-04:00",
+                "expires": "2023-06-14T14:00:00-04:00",
+                "ends": null,
+                "status": "Actual",
+                "messageType": "Alert",
+                "category": "Met",
+                "severity": "Moderate",
+                "certainty": "Observed",
+                "urgency": "Expected",
+                "event": "Special Weather Statement",
+                "sender": "w-nws.webmaster@noaa.gov",
+                "senderName": "NWS Upton NY",
+                "headline": "Special Weather Statement issued June 14 at 1:15PM EDT by NWS Upton NY",
+                "description": "At 113 PM EDT, Doppler radar was tracking strong thunderstorms\nscattered along a line extending from Oradell to Fort Lee to Jersey\nCity. Movement was northeast at 35 mph.\n\nHAZARD...Winds in excess of 40 mph and pea size hail.\n\nSOURCE...Radar indicated.\n\nIMPACT...Gusty winds could knock down tree limbs and blow around\nunsecured objects. Minor damage to outdoor objects is\npossible.\n\nStrong thunderstorms will be near...\nBergenfield, Englewood, Oradell and Norwood around 120 PM EDT.\nDobbs Ferry and Riverdale around 125 PM EDT.\nYonkers and Bronxville around 130 PM EDT.\nMott Haven and Tarrytown around 135 PM EDT.\nEast Tremont, Scarsdale and Hawthorne around 140 PM EDT.\nWhite Plains, Port Chester, Co-op City, Harrison and City Island\naround 145 PM EDT.\nNew Rochelle and Bedford around 155 PM EDT.\nStamford, Rye and Greenwich around 200 PM EDT.\n\nOther locations impacted by these storms include Fordham, Closter,\nLarchmont, Fairview, Haworth, Mount Vernon, Thornwood, Weehawken,\nTuckahoe and Pelham Manor.",
+                "instruction": "These storms may intensify, so be certain to monitor local radio\nstations and available television stations for additional information\nand possible warnings from the National Weather Service.",
+                "response": "Execute",
+                "parameters": {
+                    "AWIPSidentifier": [
+                        "SPSOKX"
+                    ],
+                    "WMOidentifier": [
+                        "WWUS81 KOKX 141715"
+                    ],
+                    "NWSheadline": [
+                        "Strong thunderstorms will impact portions of Hudson, eastern Bergen, New York (Manhattan), Bronx, southern Westchester, and southern Fairfield counties through 200 PM"
+                    ],
+                    "eventMotionDescription": [
+                        "2023-06-14T17:13:00-00:00...storm...225DEG...30KT...40.96,-74.01 40.84,-73.98 40.69,-74.08"
+                    ],
+                    "maxWindGust": [
+                        "40 MPH"
+                    ],
+                    "maxHailSize": [
+                        "0.25"
+                    ],
+                    "BLOCKCHANNEL": [
+                        "EAS",
+                        "NWEM",
+                        "CMAS"
+                    ],
+                    "EAS-ORG": [
+                        "WXR"
+                    ]
+                }
+            }
+        }
+    ],
+    "title": "Current watches, warnings, and advisories for New York (Manhattan) (NYZ072) NY",
+    "updated": "2023-06-14T17:15:52+00:00"
+}

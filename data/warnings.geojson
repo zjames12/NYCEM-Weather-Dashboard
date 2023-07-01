@@ -1,0 +1,341 @@
+{
+    "@context": [
+        "https://geojson.org/geojson-ld/geojson-context.jsonld",
+        {
+            "@version": "1.1",
+            "wx": "https://api.weather.gov/ontology#",
+            "@vocab": "https://api.weather.gov/ontology#"
+        }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.1bcf82cc817d9e42c9f147f4f8f18b40b309093a.002.1",
+            "type": "Feature",
+            "geometry": null,
+            "properties": {
+                "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.1bcf82cc817d9e42c9f147f4f8f18b40b309093a.002.1",
+                "@type": "wx:Alert",
+                "id": "urn:oid:2.49.0.1.840.0.1bcf82cc817d9e42c9f147f4f8f18b40b309093a.002.1",
+                "areaDesc": "Moriches Inlet NY to Montauk Point NY out 20 nm; Fire Island Inlet NY to Moriches Inlet NY out 20 nm; Sandy Hook NJ to Fire Island Inlet NY out 20 nm",
+                "geocode": {
+                    "SAME": [
+                        "073350",
+                        "073353",
+                        "073355"
+                    ],
+                    "UGC": [
+                        "ANZ350",
+                        "ANZ353",
+                        "ANZ355"
+                    ]
+                },
+                "affectedZones": [
+                    "https://api.weather.gov/zones/forecast/ANZ350",
+                    "https://api.weather.gov/zones/forecast/ANZ353",
+                    "https://api.weather.gov/zones/forecast/ANZ355"
+                ],
+                "references": [
+                    {
+                        "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.673a7f840751e9b5ce314392fe6343dc20637ec1.001.1",
+                        "identifier": "urn:oid:2.49.0.1.840.0.673a7f840751e9b5ce314392fe6343dc20637ec1.001.1",
+                        "sender": "w-nws.webmaster@noaa.gov",
+                        "sent": "2023-06-21T03:30:00-04:00"
+                    },
+                    {
+                        "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.3d49d1df4f7fb4b05ee9d02e99a32a915eb780f1.003.1",
+                        "identifier": "urn:oid:2.49.0.1.840.0.3d49d1df4f7fb4b05ee9d02e99a32a915eb780f1.003.1",
+                        "sender": "w-nws.webmaster@noaa.gov",
+                        "sent": "2023-06-21T10:33:00-04:00"
+                    }
+                ],
+                "sent": "2023-06-21T10:36:00-04:00",
+                "effective": "2023-06-21T10:36:00-04:00",
+                "onset": "2023-06-21T10:36:00-04:00",
+                "expires": "2023-06-21T23:45:00-04:00",
+                "ends": "2023-06-22T20:00:00-04:00",
+                "status": "Actual",
+                "messageType": "Update",
+                "category": "Met",
+                "severity": "Minor",
+                "certainty": "Likely",
+                "urgency": "Expected",
+                "event": "Small Craft Advisory",
+                "sender": "w-nws.webmaster@noaa.gov",
+                "senderName": "NWS Upton NY",
+                "headline": "Small Craft Advisory issued June 21 at 10:36AM EDT until June 22 at 8:00PM EDT by NWS Upton NY",
+                "description": "* WHAT...East winds 15 to 25 kt with gusts up to 30 kt and seas\n5 to 8 feet.\n\n* WHERE...Sandy Hook NJ to Montauk Point NY out 20 nm.\n\n* WHEN...Until 8 PM EDT Thursday.\n\n* IMPACTS...Conditions will be hazardous to small craft.",
+                "instruction": "Inexperienced mariners, especially those operating smaller\nvessels, should avoid navigating in hazardous conditions.",
+                "response": "Avoid",
+                "parameters": {
+                    "AWIPSidentifier": [
+                        "MWWOKX"
+                    ],
+                    "WMOidentifier": [
+                        "WHUS71 KOKX 211436"
+                    ],
+                    "NWSheadline": [
+                        "SMALL CRAFT ADVISORY REMAINS IN EFFECT UNTIL 8 PM EDT THURSDAY"
+                    ],
+                    "BLOCKCHANNEL": [
+                        "EAS",
+                        "NWEM",
+                        "CMAS"
+                    ],
+                    "VTEC": [
+                        "/O.CON.KOKX.SC.Y.0073.000000T0000Z-230623T0000Z/"
+                    ],
+                    "eventEndingTime": [
+                        "2023-06-23T00:00:00+00:00"
+                    ],
+                    "expiredReferences": [
+                        "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.761cf4b2e814bf7ac1733dac6b35672f5fb289e0.002.1,2023-06-20T15:13:00-04:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.e4efb47264caff8991f3f7e434329b97cd294492.002.1,2023-06-20T03:29:00-04:00 w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.e4efb47264caff8991f3f7e434329b97cd294492.001.1,2023-06-20T03:29:00-04:00"
+                    ]
+                }
+            }
+        },
+        {
+            "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.1bcf82cc817d9e42c9f147f4f8f18b40b309093a.003.1",
+            "type": "Feature",
+            "geometry": null,
+            "properties": {
+                "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.1bcf82cc817d9e42c9f147f4f8f18b40b309093a.003.1",
+                "@type": "wx:Alert",
+                "id": "urn:oid:2.49.0.1.840.0.1bcf82cc817d9e42c9f147f4f8f18b40b309093a.003.1",
+                "areaDesc": "New York Harbor; Peconic and Gardiners Bays; South Shore Bays from Jones Inlet through Shinnecock Bay",
+                "geocode": {
+                    "SAME": [
+                        "073338",
+                        "073340",
+                        "073345"
+                    ],
+                    "UGC": [
+                        "ANZ338",
+                        "ANZ340",
+                        "ANZ345"
+                    ]
+                },
+                "affectedZones": [
+                    "https://api.weather.gov/zones/forecast/ANZ338",
+                    "https://api.weather.gov/zones/forecast/ANZ340",
+                    "https://api.weather.gov/zones/forecast/ANZ345"
+                ],
+                "references": [
+                    {
+                        "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.673a7f840751e9b5ce314392fe6343dc20637ec1.002.1",
+                        "identifier": "urn:oid:2.49.0.1.840.0.673a7f840751e9b5ce314392fe6343dc20637ec1.002.1",
+                        "sender": "w-nws.webmaster@noaa.gov",
+                        "sent": "2023-06-21T03:30:00-04:00"
+                    },
+                    {
+                        "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.3d49d1df4f7fb4b05ee9d02e99a32a915eb780f1.002.1",
+                        "identifier": "urn:oid:2.49.0.1.840.0.3d49d1df4f7fb4b05ee9d02e99a32a915eb780f1.002.1",
+                        "sender": "w-nws.webmaster@noaa.gov",
+                        "sent": "2023-06-21T10:33:00-04:00"
+                    },
+                    {
+                        "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.3d49d1df4f7fb4b05ee9d02e99a32a915eb780f1.001.1",
+                        "identifier": "urn:oid:2.49.0.1.840.0.3d49d1df4f7fb4b05ee9d02e99a32a915eb780f1.001.1",
+                        "sender": "w-nws.webmaster@noaa.gov",
+                        "sent": "2023-06-21T10:33:00-04:00"
+                    }
+                ],
+                "sent": "2023-06-21T10:36:00-04:00",
+                "effective": "2023-06-21T10:36:00-04:00",
+                "onset": "2023-06-21T10:36:00-04:00",
+                "expires": "2023-06-21T20:00:00-04:00",
+                "ends": "2023-06-21T20:00:00-04:00",
+                "status": "Actual",
+                "messageType": "Update",
+                "category": "Met",
+                "severity": "Minor",
+                "certainty": "Likely",
+                "urgency": "Expected",
+                "event": "Small Craft Advisory",
+                "sender": "w-nws.webmaster@noaa.gov",
+                "senderName": "NWS Upton NY",
+                "headline": "Small Craft Advisory issued June 21 at 10:36AM EDT until June 21 at 8:00PM EDT by NWS Upton NY",
+                "description": "* WHAT...East winds 15 to 20 kt with gusts up to 25 kt and waves\n1 to 3 feet.\n\n* WHERE...The south shore and eastern bays of Long Island, and\nNew York Harbor.\n\n* WHEN...Until 8 PM EDT this evening.\n\n* IMPACTS...Conditions will be hazardous to small craft.",
+                "instruction": "Inexperienced mariners, especially those operating smaller\nvessels, should avoid navigating in hazardous conditions.",
+                "response": "Avoid",
+                "parameters": {
+                    "AWIPSidentifier": [
+                        "MWWOKX"
+                    ],
+                    "WMOidentifier": [
+                        "WHUS71 KOKX 211436"
+                    ],
+                    "NWSheadline": [
+                        "SMALL CRAFT ADVISORY REMAINS IN EFFECT UNTIL 8 PM EDT THIS EVENING"
+                    ],
+                    "BLOCKCHANNEL": [
+                        "EAS",
+                        "NWEM",
+                        "CMAS"
+                    ],
+                    "VTEC": [
+                        "/O.CON.KOKX.SC.Y.0073.000000T0000Z-230622T0000Z/"
+                    ],
+                    "eventEndingTime": [
+                        "2023-06-22T00:00:00+00:00"
+                    ],
+                    "expiredReferences": [
+                        "w-nws.webmaster@noaa.gov,urn:oid:2.49.0.1.840.0.761cf4b2e814bf7ac1733dac6b35672f5fb289e0.001.1,2023-06-20T15:13:00-04:00"
+                    ]
+                }
+            }
+        },
+        {
+            "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.1bcf82cc817d9e42c9f147f4f8f18b40b309093a.001.1",
+            "type": "Feature",
+            "geometry": null,
+            "properties": {
+                "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.1bcf82cc817d9e42c9f147f4f8f18b40b309093a.001.1",
+                "@type": "wx:Alert",
+                "id": "urn:oid:2.49.0.1.840.0.1bcf82cc817d9e42c9f147f4f8f18b40b309093a.001.1",
+                "areaDesc": "Long Island Sound East of New Haven CT/Port Jefferson NY to the Mouth of the Connecticut River; Long Island Sound East of the Mouth of the Connecticut River; Long Island Sound West of New Haven CT/Port Jefferson NY",
+                "geocode": {
+                    "SAME": [
+                        "073331",
+                        "073332",
+                        "073335"
+                    ],
+                    "UGC": [
+                        "ANZ331",
+                        "ANZ332",
+                        "ANZ335"
+                    ]
+                },
+                "affectedZones": [
+                    "https://api.weather.gov/zones/forecast/ANZ331",
+                    "https://api.weather.gov/zones/forecast/ANZ332",
+                    "https://api.weather.gov/zones/forecast/ANZ335"
+                ],
+                "references": [],
+                "sent": "2023-06-21T10:36:00-04:00",
+                "effective": "2023-06-21T10:36:00-04:00",
+                "onset": "2023-06-21T10:36:00-04:00",
+                "expires": "2023-06-21T20:00:00-04:00",
+                "ends": "2023-06-21T20:00:00-04:00",
+                "status": "Actual",
+                "messageType": "Alert",
+                "category": "Met",
+                "severity": "Minor",
+                "certainty": "Likely",
+                "urgency": "Expected",
+                "event": "Small Craft Advisory",
+                "sender": "w-nws.webmaster@noaa.gov",
+                "senderName": "NWS Upton NY",
+                "headline": "Small Craft Advisory issued June 21 at 10:36AM EDT until June 21 at 8:00PM EDT by NWS Upton NY",
+                "description": "* WHAT...East winds 15 to 20 kt with gusts up to 25 kt and seas 3\nto 5 feet.\n\n* WHERE...Long Island Sound.\n\n* WHEN...Until 8 PM EDT this evening.\n\n* IMPACTS...Conditions will be hazardous to small craft.",
+                "instruction": "Inexperienced mariners, especially those operating smaller\nvessels, should avoid navigating in hazardous conditions.",
+                "response": "Avoid",
+                "parameters": {
+                    "AWIPSidentifier": [
+                        "MWWOKX"
+                    ],
+                    "WMOidentifier": [
+                        "WHUS71 KOKX 211436"
+                    ],
+                    "NWSheadline": [
+                        "SMALL CRAFT ADVISORY IN EFFECT UNTIL 8 PM EDT THIS EVENING"
+                    ],
+                    "BLOCKCHANNEL": [
+                        "EAS",
+                        "NWEM",
+                        "CMAS"
+                    ],
+                    "VTEC": [
+                        "/O.EXA.KOKX.SC.Y.0073.000000T0000Z-230622T0000Z/"
+                    ],
+                    "eventEndingTime": [
+                        "2023-06-22T00:00:00+00:00"
+                    ]
+                }
+            }
+        },
+        {
+            "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.2eee7c1a67c0410c448093b726278e088d3e016a.001.1",
+            "type": "Feature",
+            "geometry": null,
+            "properties": {
+                "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.2eee7c1a67c0410c448093b726278e088d3e016a.001.1",
+                "@type": "wx:Alert",
+                "id": "urn:oid:2.49.0.1.840.0.2eee7c1a67c0410c448093b726278e088d3e016a.001.1",
+                "areaDesc": "Kings (Brooklyn); Southwest Suffolk; Southeast Suffolk; Southern Queens; Southern Nassau",
+                "geocode": {
+                    "SAME": [
+                        "036047",
+                        "036103",
+                        "036081",
+                        "036059"
+                    ],
+                    "UGC": [
+                        "NYZ075",
+                        "NYZ080",
+                        "NYZ081",
+                        "NYZ178",
+                        "NYZ179"
+                    ]
+                },
+                "affectedZones": [
+                    "https://api.weather.gov/zones/forecast/NYZ075",
+                    "https://api.weather.gov/zones/forecast/NYZ080",
+                    "https://api.weather.gov/zones/forecast/NYZ081",
+                    "https://api.weather.gov/zones/forecast/NYZ178",
+                    "https://api.weather.gov/zones/forecast/NYZ179"
+                ],
+                "references": [
+                    {
+                        "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.f3e64391dcd03de426c840706ae2d578877d65ba.001.1",
+                        "identifier": "urn:oid:2.49.0.1.840.0.f3e64391dcd03de426c840706ae2d578877d65ba.001.1",
+                        "sender": "w-nws.webmaster@noaa.gov",
+                        "sent": "2023-06-20T16:45:00-04:00"
+                    }
+                ],
+                "sent": "2023-06-21T04:49:00-04:00",
+                "effective": "2023-06-21T04:49:00-04:00",
+                "onset": "2023-06-21T08:00:00-04:00",
+                "expires": "2023-06-21T21:00:00-04:00",
+                "ends": "2023-06-21T21:00:00-04:00",
+                "status": "Actual",
+                "messageType": "Update",
+                "category": "Met",
+                "severity": "Moderate",
+                "certainty": "Likely",
+                "urgency": "Expected",
+                "event": "Rip Current Statement",
+                "sender": "w-nws.webmaster@noaa.gov",
+                "senderName": "NWS Upton NY",
+                "headline": "Rip Current Statement issued June 21 at 4:49AM EDT until June 21 at 9:00PM EDT by NWS Upton NY",
+                "description": "* WHAT...Dangerous rip currents expected.\n\n* WHERE...Kings (Brooklyn), Southwest Suffolk, Southeast\nSuffolk, Southern Queens and Southern Nassau Counties.\n\n* WHEN...From 8 AM EDT this morning through this evening.\n\n* IMPACTS...Life-threatening rip currents are likely for all\npeople entering the surf zone. Anyone visiting the beaches\nshould stay out of the surf. Rip currents can sweep even the\nbest swimmers away from shore into deeper water.",
+                "instruction": "If you enter the surf zone, always have a flotation device with\nyou and swim near a lifeguard. If caught in a rip current, relax\nand float, and do not swim against the current. If able, swim in\na direction following the shoreline. If unable to escape, face\nthe shore and yell or wave for help.",
+                "response": "Avoid",
+                "parameters": {
+                    "AWIPSidentifier": [
+                        "CFWOKX"
+                    ],
+                    "WMOidentifier": [
+                        "WHUS41 KOKX 210849"
+                    ],
+                    "NWSheadline": [
+                        "HIGH RIP CURRENT RISK REMAINS IN EFFECT FROM 8 AM EDT THIS MORNING THROUGH THIS EVENING"
+                    ],
+                    "BLOCKCHANNEL": [
+                        "EAS",
+                        "NWEM",
+                        "CMAS"
+                    ],
+                    "VTEC": [
+                        "/O.CON.KOKX.RP.S.0005.230621T1200Z-230622T0100Z/"
+                    ],
+                    "eventEndingTime": [
+                        "2023-06-22T01:00:00+00:00"
+                    ]
+                }
+            }
+        }
+    ],
+    "title": "Current watches, warnings, and advisories",
+    "updated": "2023-06-21T14:37:06+00:00"
+}

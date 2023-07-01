@@ -1,0 +1,199 @@
+{
+    "@context": [
+        "https://geojson.org/geojson-ld/geojson-context.jsonld",
+        {
+            "@version": "1.1",
+            "wx": "https://api.weather.gov/ontology#",
+            "@vocab": "https://api.weather.gov/ontology#"
+        }
+    ],
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.bdffe29b4690eeae086d6462098ab78024ca0248.001.1",
+            "type": "Feature",
+            "geometry": {
+                "type": "Polygon",
+                "coordinates": [
+                    [
+                        [
+                            -73.939999999999998,
+                            40.539999999999999
+                        ],
+                        [
+                            -73.939999999999998,
+                            40.57
+                        ],
+                        [
+                            -73.9599999,
+                            40.57
+                        ],
+                        [
+                            -73.969999999999999,
+                            40.579999999999998
+                        ],
+                        [
+                            -73.920000000000002,
+                            40.649999999999999
+                        ],
+                        [
+                            -73.819999899999999,
+                            40.670000000000002
+                        ],
+                        [
+                            -73.75,
+                            40.609999999999999
+                        ],
+                        [
+                            -73.700000000000003,
+                            40.649999999999999
+                        ],
+                        [
+                            -73.579999999999998,
+                            40.649999999999999
+                        ],
+                        [
+                            -73.569999899999999,
+                            40.640000000000001
+                        ],
+                        [
+                            -73.810000000000002,
+                            40.420000000000002
+                        ],
+                        [
+                            -73.980000000000004,
+                            40.510000000000005
+                        ],
+                        [
+                            -73.939999999999998,
+                            40.539999999999999
+                        ]
+                    ]
+                ]
+            },
+            "properties": {
+                "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.bdffe29b4690eeae086d6462098ab78024ca0248.001.1",
+                "@type": "wx:Alert",
+                "id": "urn:oid:2.49.0.1.840.0.bdffe29b4690eeae086d6462098ab78024ca0248.001.1",
+                "areaDesc": "Sandy Hook NJ to Fire Island Inlet NY out 20 nm",
+                "geocode": {
+                    "SAME": [
+                        "073355"
+                    ],
+                    "UGC": [
+                        "ANZ355"
+                    ]
+                },
+                "affectedZones": [
+                    "https://api.weather.gov/zones/forecast/ANZ355"
+                ],
+                "references": [],
+                "sent": "2023-06-14T13:18:00-04:00",
+                "effective": "2023-06-14T13:18:00-04:00",
+                "onset": "2023-06-14T13:18:00-04:00",
+                "expires": "2023-06-14T13:45:00-04:00",
+                "ends": null,
+                "status": "Actual",
+                "messageType": "Alert",
+                "category": "Met",
+                "severity": "Minor",
+                "certainty": "Observed",
+                "urgency": "Expected",
+                "event": "Marine Weather Statement",
+                "sender": "w-nws.webmaster@noaa.gov",
+                "senderName": "NWS Upton NY",
+                "headline": "Marine Weather Statement issued June 14 at 1:18PM EDT by NWS Upton NY",
+                "description": "The areas affected include...\n\nSandy Hook NJ to Fire Island Inlet NY out 20 nm...\n\nAt 118 PM EDT, Doppler radar indicated a thunderstorm near Rockaway\nInlet, moving northeast at 25 knots.\n\nLocations impacted include...\nIsland Park, Barnum Island, Jamaica Bay and Rockaway Inlet.",
+                "instruction": "Mariners can expect gusty winds up to 30 knots, locally higher\nwaves, and lightning strikes. Boaters should seek safe harbor\nimmediately until this storm passes.",
+                "response": "Monitor",
+                "parameters": {
+                    "AWIPSidentifier": [
+                        "MWSOKX"
+                    ],
+                    "WMOidentifier": [
+                        "FZUS71 KOKX 141718"
+                    ],
+                    "NWSheadline": [
+                        "THUNDERSTORM OVER THE WATERS SOUTH OF THE ROCKAWAYS"
+                    ],
+                    "BLOCKCHANNEL": [
+                        "EAS",
+                        "NWEM",
+                        "CMAS"
+                    ]
+                }
+            }
+        },
+        {
+            "id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.f3dcb6c190eed69233c3e84e1dcefaa6272e247e.001.1",
+            "type": "Feature",
+            "geometry": null,
+            "properties": {
+                "@id": "https://api.weather.gov/alerts/urn:oid:2.49.0.1.840.0.f3dcb6c190eed69233c3e84e1dcefaa6272e247e.001.1",
+                "@type": "wx:Alert",
+                "id": "urn:oid:2.49.0.1.840.0.f3dcb6c190eed69233c3e84e1dcefaa6272e247e.001.1",
+                "areaDesc": "Moriches Inlet NY to Montauk Point NY out 20 nm; Fire Island Inlet NY to Moriches Inlet NY out 20 nm; Sandy Hook NJ to Fire Island Inlet NY out 20 nm",
+                "geocode": {
+                    "SAME": [
+                        "073350",
+                        "073353",
+                        "073355"
+                    ],
+                    "UGC": [
+                        "ANZ350",
+                        "ANZ353",
+                        "ANZ355"
+                    ]
+                },
+                "affectedZones": [
+                    "https://api.weather.gov/zones/forecast/ANZ350",
+                    "https://api.weather.gov/zones/forecast/ANZ353",
+                    "https://api.weather.gov/zones/forecast/ANZ355"
+                ],
+                "references": [],
+                "sent": "2023-06-14T03:45:00-04:00",
+                "effective": "2023-06-14T03:45:00-04:00",
+                "onset": "2023-06-14T12:00:00-04:00",
+                "expires": "2023-06-14T18:00:00-04:00",
+                "ends": "2023-06-14T18:00:00-04:00",
+                "status": "Actual",
+                "messageType": "Alert",
+                "category": "Met",
+                "severity": "Minor",
+                "certainty": "Likely",
+                "urgency": "Expected",
+                "event": "Small Craft Advisory",
+                "sender": "w-nws.webmaster@noaa.gov",
+                "senderName": "NWS Upton NY",
+                "headline": "Small Craft Advisory issued June 14 at 3:45AM EDT until June 14 at 6:00PM EDT by NWS Upton NY",
+                "description": "* WHAT...South winds 15 to 20 kt with gusts up to 25 kt and seas\n2 to 4 feet expected.\n\n* WHERE...Sandy Hook NJ to Montauk Point NY out 20 nm.\n\n* WHEN...From noon today to 6 PM EDT this evening.\n\n* IMPACTS...Conditions will be hazardous to small craft.",
+                "instruction": "Inexperienced mariners, especially those operating smaller\nvessels, should avoid navigating in hazardous conditions.",
+                "response": "Avoid",
+                "parameters": {
+                    "AWIPSidentifier": [
+                        "MWWOKX"
+                    ],
+                    "WMOidentifier": [
+                        "WHUS71 KOKX 140745"
+                    ],
+                    "NWSheadline": [
+                        "SMALL CRAFT ADVISORY IN EFFECT FROM NOON TODAY TO 6 PM EDT THIS EVENING"
+                    ],
+                    "BLOCKCHANNEL": [
+                        "EAS",
+                        "NWEM",
+                        "CMAS"
+                    ],
+                    "VTEC": [
+                        "/O.NEW.KOKX.SC.Y.0072.230614T1600Z-230614T2200Z/"
+                    ],
+                    "eventEndingTime": [
+                        "2023-06-14T22:00:00+00:00"
+                    ]
+                }
+            }
+        }
+    ],
+    "title": "Current watches, warnings, and advisories for ANZ355",
+    "updated": "2023-06-14T17:19:37+00:00"
+}

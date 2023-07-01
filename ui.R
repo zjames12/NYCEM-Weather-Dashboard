@@ -13,19 +13,44 @@ header <- dashboardHeader(
 
 body <- dashboardBody(
   fluidRow(
-    column(9, 
+    column(8, 
            # leafletOutput(outputId = "mapPlot")
+           # img(src="sat.gif", align = "left",height='250px',width='500px'),
            box(width = NULL, solidHeader = TRUE,
                formattableOutput("centralWeather"),
                dygraphOutput("centralWeatherHourly",width = "90%", height = "110px")
            ),
-           box(width = NULL, solidHeader = TRUE,
-               leafletOutput("mapPlot", height = 500)
+           tabBox(width = NULL, height = 600,
+             tabPanel("Layers", leafletOutput("mapPlot", height = 500)),
+             tabPanel("Alerts", leafletOutput("warningMap", height = 500)),
+             tabPanel("Radar", imageOutput("radarImage")),
+             tabPanel("Satellite", imageOutput("satImage"))
            )
+           # box(width = NULL, solidHeader = TRUE,
+           #     leafletOutput("mapPlot", height = 500)
+           # ),
+           # box(width = NULL, solidHeader = TRUE,
+           #     leafletOutput("warningMap", height = 500)
+           # )
     ),
-    column(3, 
+    column(4, 
+           box(width = NULL, height = "200px", status = "warning",
+             h4("Written Analysis"),
+             p (
+             "Here is Josh's analysis. This section will become larger if you
+             add more text. The title and valid time can be changed. The update latency
+             will depend on how the final site is hosted."
+             ),
+             strong("Valid at 00:00")
+           ),
            box(width = NULL, status = "warning",
-               selectInput("layer", "Layer", c("Temperature", "Relative Humidity", "Max. Temperature", "Min. Temperature")),
+               selectInput("layer", "Layer", c("Temperature", "Relative Humidity",
+                                               "Max. Temperature", "Min. Temperature",
+                                               "Dew Point", "Heat Index", "Sky Cover",
+                                               "Chance of Precipitation", "Amt. of Precipitation",
+                                               "Ice Accumulation", "Snowfall Amount", "Visibility",
+                                               "Lightning Activity")),
+               
                # sliderInput("num2", "Time", value = round(Sys.time(), units="hours"), min = round(Sys.time(), units="hours"),
                #             max = round(Sys.time(), units="hours") + hours(6), step = 3600)
                selectInput("mapType", "Map Type", c("Default", "Night", "Satellite")),
@@ -47,7 +72,14 @@ body <- dashboardBody(
                #   br(),
                #   "Source data updates every 15 seconds."
                # )
-           )
+           ),
+           box(width = NULL, status = "warning",
+               h4("Watches and Warnings"),
+               # p(
+               #   htmlOutput("warningText")
+               # )
+               htmlOutput("warningText")
+              )
     )
     
   )
