@@ -33,8 +33,9 @@ m_to_mi <-function(df) {
   return(df / 1609.344)
 }
 
-api_call_central_park <- function(num_attempts = 10){
-  query <- "https://api.weather.gov/gridpoints/OKX/34,38"
+api_call <- function(X, Y, num_attempts = 10){
+  # query <- "https://api.weather.gov/gridpoints/OKX/34,38"
+  query <- paste("https://api.weather.gov/gridpoints/OKX/", X, ",", Y, sep = "")
   cnt = 1
   raw_data = NA
   while (length(raw_data) == 1 && cnt < num_attempts) {
@@ -413,7 +414,7 @@ api_warning_call <- function(){
       alerts = append(alerts, mes)
       shaps = append(shaps, shape)
     }
-    print(alerts)
+    
   }
   return(list(alerts=alerts, shapes=shaps))
 }
@@ -449,10 +450,18 @@ api_warning_call_2 <- function(){
       })
     cnt = cnt + 1
   }
-  num_alerts = length(raw_data$features$geometry)
+  if (is.null(names(raw_data$features$geometry))){
+    num_alerts = length(raw_data$features$geometry)
+    check = raw_data$features$geometry
+  } else {
+    num_alerts = length(raw_data$features$geometry$type)
+    check = raw_data$features$geometry$type
+  }
+  
   poly = list()
   for (i in 1:num_alerts){
-    if (is.na(raw_data$features$geometry[i])){
+    # print(raw_data$features$geometry$type[[i]])
+    if (is.na(check[[i]])){
       aff_area <- raw_data$features$properties$geocode$UGC[[i]]
       aff_area <- intersect(aff_area, zones)
       if (length(aff_area) != 0){
@@ -461,7 +470,6 @@ api_warning_call_2 <- function(){
         for (j in 1:length(aff_area)){
           if (!is.na(aff_area[j])) {
             fi = paste("shape/",aff_area[j], ".geojson", sep="")
-            # print(fi)
             sr <- geojson_read(fi,  what = "sp")
             if (cnt == 1){
               a <- sr
@@ -477,24 +485,20 @@ api_warning_call_2 <- function(){
           }
         }
         poly = append(poly, a)
+      } else {
+        print("Error")
       } 
       
     } else {
       # a = raw_data$features$geometry[i]
       # raw_data$features$geometry$coordinates[[i]]
-      sr = Polygon(cbind(raw_data$features$geometry$coordinates[[i]][,,1], 
-                         raw_data$features$geometry$coordinates[[i]][,,2]))
       
-      # srs = Polygons(list(sr), paste(i))
+      sr = Polygon(cbind(raw_data$features$geometry$coordinates[[i]][,,1],
+                         raw_data$features$geometry$coordinates[[i]][,,2]))
+
       poly = append(poly, sr)
     }
   }
-  # sp <- SpatialPolygons(poly)
-  # sps <- SpatialPolygonsDataFrame(sp, 
-  #                                 data.frame(
-  #                                   X = rep(1, num_alerts)
-  #                                   )
-  #                                 )
   
   # al <- raw_data$features$properties$event[is.na(raw_data$features$geometry$type)]
   al <- raw_data$features$properties$event

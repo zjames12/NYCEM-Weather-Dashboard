@@ -49,7 +49,7 @@ body <- dashboardBody(
                                                "Dew Point", "Heat Index", "Sky Cover",
                                                "Chance of Precipitation", "Amt. of Precipitation",
                                                "Ice Accumulation", "Snowfall Amount", "Visibility",
-                                               "Lightning Activity")),
+                                               "Lightning Activity", "Testing")),
                
                # sliderInput("num2", "Time", value = round(Sys.time(), units="hours"), min = round(Sys.time(), units="hours"),
                #             max = round(Sys.time(), units="hours") + hours(6), step = 3600)
@@ -82,6 +82,35 @@ body <- dashboardBody(
               )
     )
     
+  ), 
+  fluidRow(
+    column (12, 
+            box(width = NULL, solidHeader = TRUE,
+                h3("Hazards")
+            ),
+            tabBox(width = NULL, height = 600,
+                   tabPanel("Temp", 
+                            column(5, 
+                                   h3("Current Conditions"),
+                                   leafletOutput("heatHazardMap")),
+                            column(5,
+                                   h3("Heat Index Outlook"),
+                                   h6("Manhattan"),
+                                   dygraphOutput("boroughManattanHourly",width = "400px", height = "60px"),
+                                   h6("Bronx"),
+                                   dygraphOutput("boroughBronxHourly",width = "400px", height = "60px"),
+                                   h6("Brooklyn"),
+                                   dygraphOutput("boroughBrooklynHourly",width = "400px", height = "60px"),
+                                   h6("Queens"),
+                                   dygraphOutput("boroughQueensHourly",width = "400px", height = "60px"),
+                                   h6("Staten Island"),
+                                   dygraphOutput("boroughStatenIslandHourly",width = "400px", height = "60px"))
+                            ),
+                   tabPanel("Precip", h4("Text")),
+                   tabPanel("Wind", h4("Text")),
+                   tabPanel("Coastal", h4("Text"))
+      )
+    )
   )
 )
 

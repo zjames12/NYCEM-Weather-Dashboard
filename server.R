@@ -22,7 +22,22 @@ function(input, output, session) {
   )
   
   getCentralParkData <- reactive(
-    api_call_central_park()
+    api_call("34", "38")
+  )
+  
+  getBronxData <- reactive(
+    api_call("36", "41")
+  )
+  getQueensData <- reactive(
+    api_call("39", "37")
+  )
+  
+  getBrooklynData <- reactive(
+    api_call("36", "33")
+  )
+  
+  getStatenIslandData <- reactive(
+    api_call("29", "29")
   )
   
   getWarningsData <-reactive(
@@ -62,7 +77,11 @@ function(input, output, session) {
             "Rip Current Statement"="#40e0d0",
             "Air Quality Alert"="#808080",
             "Marine Weather Statement"="#ffefd5",
-            "Special Marine Warning"="#ffa500")
+            "Special Marine Warning"="#ffa500",
+            "Coastal Flood Advisory"="#7cfc00",
+            "Flood Watch"="#2e8b57",
+            "Coastal Flood Statement"="#6b8e23",
+            "Hazardous Weather Outlook"="#eee8aa")
     
     
     
@@ -391,26 +410,46 @@ function(input, output, session) {
   output$centralWeatherHourly <- renderDygraph({
     df <- getCentralParkData()
     t <- paste(
-      substring(df$properties$apparentTemperature$values$validTime, 1, 10),
+      substring(df$properties$temperature$values$validTime, 1, 10),
       " ",
-      substring(df$properties$apparentTemperature$values$validTime, 12,19),
+      substring(df$properties$temperature$values$validTime, 12,16),
       sep = "")
     ft <- as.POSIXlt(t)
-    plot_data <- data.frame(time = ft, temp = c_to_f(df$properties$apparentTemperature$values$value))
-    # p <- ggplot(plot_dat, aes(x=time, y=temp)) +
-    #   geom_line() + 
-    #   xlab(" ") + ylab("Temperature") +
-    #   theme(aspect.ratio=1/8)
-    # p
-    don <- xts(x = plot_data$temp, order.by = plot_data$time)
-    p <- dygraph(don, width = 500, height = 100) %>%
-      dyOptions(labelsUTC = TRUE, fillGraph=F, 
-                drawPoints = TRUE, pointSize = 2,
-                fillAlpha=0.1, drawGrid = FALSE, 
-                colors="#D8AE5A") %>%
-      dyRangeSelector() %>%
-      dyCrosshair(direction = "vertical") %>%
-      dyHighlight(highlightCircleSize = 5, highlightSeriesBackgroundAlpha = 0.2, hideOnMouseOut = FALSE)
+    
+    plot_data <- data.frame(time = ft, Temperature = c_to_f(df$properties$temperature$values$value))
+    
+    t <- paste(
+      substring(df$properties$maxTemperature$values$validTime, 1, 10),
+      " ",
+      substring(df$properties$maxTemperature$values$validTime, 12,16),
+      sep = "")
+    ft <- as.POSIXlt(t)
+    mdata <- data.frame(time = ft, Max = c_to_f(df$properties$maxTemperature$values$value))
+    
+    plot_data <- merge(plot_data, mdata, by="time", all=T)
+    plot_data$Max <- na.locf(plot_data$Max, na.rm = F, fromLast = F)
+    
+    t <- paste(
+      substring(df$properties$minTemperature$values$validTime, 1, 10),
+      " ",
+      substring(df$properties$minTemperature$values$validTime, 12,16),
+      sep = "")
+    ft <- as.POSIXlt(t)
+    mdata <- data.frame(time = ft, Min = c_to_f(df$properties$minTemperature$values$value))
+    
+    plot_data <- merge(plot_data, mdata, by="time", all=T)
+    plot_data$Min <- na.locf(plot_data$Min, na.rm = F, fromLast = F)
+    
+    # maxTemp <- plot_data[plot_data$Temperature == max(plot_data$Temperature),]
+    # minTemp <- plot_data[plot_data$Temperature == min(plot_data$Temperature),]
+    
+    # don <- xts(x = plot_data$temp, order.by = plot_data$time)
+    
+    p <- dygraph(plot_data, width = 500, height = 200, ylab = "Temperature &degF") %>%
+      dyOptions(stepPlot = TRUE, drawGrid = F) %>%
+      dyLegend(show = "follow", width = 350)
+    #   dyAnnotation(maxTemp$time[1], text = paste(maxTemp$Temperature[1])) %>%
+    # dyAnnotation(minTemp$time[1], text = paste(minTemp$Temperature[1]))
     p
   })
   
@@ -421,11 +460,190 @@ function(input, output, session) {
     } else {
       s <- ""
       for (i in 1:length(df$alerts)){
-        s <- HTML(paste(s, df$alerts[i], "<br/>", df$des[i], "newline"))
+        # s <- HTML(paste(s, df$alerts[i], "<br/>", df$des[i], "newline"))
+        s <- HTML(paste(s, df$alerts[i], "<br/>"))
       }
       return(s)
     }
     # return("Testing")
   })
+  
+  output$boroughManattanHourly <- renderDygraph({
+    df <- getCentralParkData()
+    t <- paste(
+      substring(df$properties$apparentTemperature$values$validTime, 1, 10),
+      " ",
+      substring(df$properties$apparentTemperature$values$validTime, 12,16),
+      sep = "")
+    ft <- as.POSIXlt(t)
+    
+    plot_data <- data.frame(time = ft, Temperature = c_to_f(df$properties$apparentTemperature$values$value))
+    
+    
+    
+    maxTemp <- plot_data[plot_data$Temperature == max(plot_data$Temperature),]
+    minTemp <- plot_data[plot_data$Temperature == min(plot_data$Temperature),]
+
+    colnames(plot_data) <- c("time", "Heat Index")
+    
+    p <- dygraph(plot_data, width = 500, height = 200) %>%
+      dyOptions(stepPlot = TRUE, drawGrid = F) %>%
+      dyLegend(show = "follow") %>%
+      dyAnnotation(maxTemp$time[1], text = paste(maxTemp$Temperature[1]), 
+                   height = 18, width = 18, tickHeight = 6) %>%
+      dyAnnotation(minTemp$time[1], text = paste(minTemp$Temperature[1]),
+                   height = 18, width = 18, tickHeight = 14)
+    p
+  })
+  output$boroughBronxHourly <- renderDygraph({
+    df <- getBronxData()
+    t <- paste(
+      substring(df$properties$apparentTemperature$values$validTime, 1, 10),
+      " ",
+      substring(df$properties$apparentTemperature$values$validTime, 12,16),
+      sep = "")
+    ft <- as.POSIXlt(t)
+
+    plot_data <- data.frame(time = ft, HI = c_to_f(df$properties$apparentTemperature$values$value))
+    maxTemp <- plot_data[plot_data$HI == max(plot_data$HI),]
+    minTemp <- plot_data[plot_data$HI == min(plot_data$HI),]
+    
+    colnames(plot_data) <- c("time", "Heat Index")
+    
+    
+    
+    p <- dygraph(plot_data, width = 500, height = 200) %>%
+      dyOptions(stepPlot = TRUE, drawGrid = F) %>%
+      dyLegend(show = "follow") %>%
+      dyAnnotation(maxTemp$time[1], text = paste(maxTemp$HI[1]), 
+                 height = 18, width = 18, tickHeight = 6) %>%
+      dyAnnotation(minTemp$time[1], text = paste(minTemp$HI[1]),
+                   height = 18, width = 18, tickHeight = 14)
+    p
+  })
+  output$boroughBrooklynHourly <- renderDygraph({
+    df <- getBrooklynData()
+    t <- paste(
+      substring(df$properties$apparentTemperature$values$validTime, 1, 10),
+      " ",
+      substring(df$properties$apparentTemperature$values$validTime, 12,16),
+      sep = "")
+    ft <- as.POSIXlt(t)
+    
+    plot_data <- data.frame(time = ft, HI = c_to_f(df$properties$apparentTemperature$values$value))
+    maxTemp <- plot_data[plot_data$HI == max(plot_data$HI),]
+    minTemp <- plot_data[plot_data$HI == min(plot_data$HI),]
+    colnames(plot_data) <- c("time", "Heat Index")
+    
+    p <- dygraph(plot_data, width = 500, height = 200) %>%
+      dyOptions(stepPlot = TRUE, drawGrid = F) %>%
+      dyLegend(show = "follow") %>%
+      dyAnnotation(maxTemp$time[1], text = paste(maxTemp$HI[1]), 
+                 height = 18, width = 18, tickHeight = 6) %>%
+      dyAnnotation(minTemp$time[1], text = paste(minTemp$HI[1]),
+                   height = 18, width = 18, tickHeight = 14)
+    p
+  })
+  output$boroughQueensHourly <- renderDygraph({
+    df <- getQueensData()
+    t <- paste(
+      substring(df$properties$apparentTemperature$values$validTime, 1, 10),
+      " ",
+      substring(df$properties$apparentTemperature$values$validTime, 12,16),
+      sep = "")
+    ft <- as.POSIXlt(t)
+    
+    plot_data <- data.frame(time = ft, HI = c_to_f(df$properties$apparentTemperature$values$value))
+    maxTemp <- plot_data[plot_data$HI == max(plot_data$HI),]
+    minTemp <- plot_data[plot_data$HI == min(plot_data$HI),]
+    colnames(plot_data) <- c("time", "Heat Index")
+    
+    p <- dygraph(plot_data, width = 500, height = 200) %>%
+      dyOptions(stepPlot = TRUE, drawGrid = F) %>%
+      dyLegend(show = "follow") %>%
+      dyAnnotation(maxTemp$time[1], text = paste(maxTemp$HI[1]), 
+                 height = 18, width = 18, tickHeight = 6) %>%
+      dyAnnotation(minTemp$time[1], text = paste(minTemp$HI[1]),
+                   height = 18, width = 18, tickHeight = 14)
+    p
+  })
+  output$boroughStatenIslandHourly <- renderDygraph({
+    df <- getStatenIslandData()
+    t <- paste(
+      substring(df$properties$apparentTemperature$values$validTime, 1, 10),
+      " ",
+      substring(df$properties$apparentTemperature$values$validTime, 12,16),
+      sep = "")
+    ft <- as.POSIXlt(t)
+    
+    plot_data <- data.frame(time = ft, HI = c_to_f(df$properties$apparentTemperature$values$value))
+    maxTemp <- plot_data[plot_data$HI == max(plot_data$HI),]
+    minTemp <- plot_data[plot_data$HI == min(plot_data$HI),]
+    colnames(plot_data) <- c("time", "Heat Index")
+    
+    p <- dygraph(plot_data, width = 500, height = 200) %>%
+      dyOptions(stepPlot = TRUE, drawGrid = F) %>%
+      dyLegend(show = "follow") %>%
+      dyAnnotation(maxTemp$time[1], text = paste(maxTemp$HI[1]), 
+                 height = 18, width = 18, tickHeight = 6) %>%
+      dyAnnotation(minTemp$time[1], text = paste(minTemp$HI[1]),
+                   height = 18, width = 18, tickHeight = 14)
+    p
+  })
+  
+  output$heatHazardMap <- renderLeaflet({
+    layer_data = getData()
+    data_to_plot = c_to_f(layer_data$heatIndex)
+    labels <- sprintf(
+      "<strong>%.0f&degF</strong>",
+      data_to_plot
+    ) %>% lapply(htmltools::HTML)
+    pal <- colorNumeric(palette = "Spectral", domain = c(50, 120), reverse = T)
+    legend_title = "&degF"
+    legend_values = c(50, 120)
+    
+    m <- leaflet() %>%
+      addMapPane("background_map", zIndex = 410) %>%  
+      addMapPane("polygons", zIndex = 420) %>%        
+      addMapPane("polylines", zIndex = 430) %>%
+      addMapPane("labels", zIndex = 440) %>%
+      addProviderTiles(providers$CartoDB.Positron,
+                       layerId = "background_map",
+                       # options = providerTileOptions(minZoom = 9, maxZoom = 12),
+                       options = pathOptions(pane = "background_map")
+      ) %>%
+      fitBounds(-74.302575, 40.496949, -73.738228, 40.883178) %>%
+      addPolygons(data = layer_data,
+                  fillColor = pal(data_to_plot),
+                  fillOpacity = 0.7,
+                  weight = 2,
+                  opacity = .01,
+                  color = "white",
+                  dashArray = "3",
+                  highlightOptions = highlightOptions(
+                    weight = .1,
+                    color = "#666",
+                    dashArray = "",
+                    fillOpacity = .7,
+                    fillColor = "#666",
+                    opacity = 1),
+                  label = labels,
+                  labelOptions = labelOptions(
+                    style = list("font-weight" = "normal", padding = "3px 8px"),
+                    textsize = "15px",
+                    direction = "auto"),
+                  options = pathOptions(pane = "polygons")) %>%
+      addPolylines(data = getNYCMap(),
+                   weight = 1,
+                   options = pathOptions(pane = "polylines")) %>%
+      addProviderTiles(providers$CartoDB.PositronOnlyLabels, 
+                       options = pathOptions(pane = "labels")) %>%
+      leaflet::addLegend("bottomright",pal = pal, values = legend_values,
+                         opacity = 1, title = legend_title)
+
+    m
+  })
+  
+  
   
 }
