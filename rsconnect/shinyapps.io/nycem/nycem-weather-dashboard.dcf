@@ -1,0 +1,11 @@
+name: nycem-weather-dashboard
+title:
+username:
+account: nycem
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 9456807
+bundleId: 7457240
+url: https://nycem.shinyapps.io/nycem-weather-dashboard/
+when: 1689348110.2281
+lastSyncTime: 1689348110.2281

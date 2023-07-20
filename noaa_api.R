@@ -8,12 +8,13 @@ suppressWarnings(suppressMessages(library(lubridate, quietly = T, warn.conflicts
 suppressWarnings(suppressMessages(library(TSstudio, quietly = T, warn.conflicts = F)))
 suppressWarnings(suppressMessages(library(ggplot2, quietly = T, warn.conflicts = F)))
 suppressWarnings(suppressMessages(library(doParallel, quietly = T, warn.conflicts = F)))
-library(leaflet)
-library(sp)
-library(RColorBrewer)
-library(dygraphs)
-library(xts)
-
+suppressWarnings(suppressMessages(library(leaflet, quietly = T, warn.conflicts = F)))
+suppressWarnings(suppressMessages(library(sp, quietly = T, warn.conflicts = F)))
+suppressWarnings(suppressMessages(library(RColorBrewer, quietly = T, warn.conflicts = F)))
+suppressWarnings(suppressMessages(library(dygraphs, quietly = T, warn.conflicts = F)))
+suppressWarnings(suppressMessages(library(xts, quietly = T, warn.conflicts = F)))
+library(lubridate)
+library(zoo)
 # 34, 38
 nyc_outline <- function(){
   spdf <- geojson_read("Borough Boundaries.geojson",  what = "sp")
@@ -31,6 +32,10 @@ mm_to_in <- function(df) {
 
 m_to_mi <-function(df) {
   return(df / 1609.344)
+}
+
+km_to_mi <-function(df) {
+  return(df / 1.609344)
 }
 
 api_call <- function(X, Y, num_attempts = 10){
@@ -66,59 +71,47 @@ api_call <- function(X, Y, num_attempts = 10){
 
 call_api_2 <- function(){
   
+  start_time <- ceiling_date(Sys.time(), unit = "hour")
+  end_time <- start_time + hours(71)
+  validTime <- seq(start_time, end_time, by = "hours")
+  timedf <- data.frame(validTime)
+  
   grid_points = read.csv("nyc_grid_locs.csv")
 
   num_grids = length(grid_points$X)
-  temp_data <- matrix(ncol = 60, nrow = num_grids)
+  temp_data <- matrix(ncol = 72, nrow = num_grids)
   maxTemperature_data <- matrix(ncol = 8, nrow = num_grids)
   minTemperature_data <- matrix(ncol = 8, nrow = num_grids)
-  rh_data <- matrix(ncol = 60, nrow = num_grids)
+  rh_data <- matrix(ncol = 72, nrow = num_grids)
   apparentTemperature_data <- matrix(ncol = 60, nrow = num_grids)
   dewpoint_data <- matrix(ncol = 30, nrow = num_grids)
   wetBulbGlobeTemperature_data <- matrix(ncol = 60, nrow = num_grids)
   heatIndex_data <- matrix(ncol = 60, nrow = num_grids)
   windChill_data <- matrix(ncol = 60, nrow = num_grids)
   skyCover_data <- matrix(ncol = 60, nrow = num_grids)
-  windDirection_data <- matrix(ncol = 60, nrow = num_grids)
-  windSpeed_data <- matrix(ncol = 30, nrow = num_grids)
-  windGust_data <- matrix(ncol = 60, nrow = num_grids)
+  
+  windDirection_data <- matrix(ncol = 48, nrow = num_grids)
+  windSpeed_data <- matrix(ncol = 48, nrow = num_grids)
+  windGust_data <- matrix(ncol = 48, nrow = num_grids)
+  
   probabilityOfPrecipitation_data <- matrix(ncol = 30, nrow = num_grids)
   quantitativePrecipitation_data <- matrix(ncol = 10, nrow = num_grids)
   iceAccumulation_data <- matrix(ncol = 10, nrow = num_grids)
   snowfallAmount_data <- matrix(ncol = 10, nrow = num_grids)
   visibility_data <- matrix(ncol = 3, nrow = num_grids)
   lightningActivityLevel_data <- matrix(ncol = 2, nrow = num_grids)
-  # pressure_data 
-  # probabilityOfTropicalStormWinds_data
-  # probabilityOfHurricane_data
-  # potentialOf15mphWinds_data
-  # potentialOf25mphWinds_data
-  # potentialOf35mphWinds_data
-  # potentialOf45mphWinds_data
-  # potentialOf20mphWinds_data
-  # potentialOf30mphWinds_data
-  # potentialOf40mphWinds_data
-  # potentialOf50mphWinds_data
-  # potentialOf60mphWinds_data
-  # probabilityOfThunder_data
-  # redFlagThreatIndex_data
   
   init = F
   success_cnt = 0
   poly = list()
-  # pb = txtProgressBar(min = 0, max = length(length(grid_points$X)), initial = 0)
-  for (i in 1:(length(grid_points$X))){#length(grid_points$X)
+  n_iter = length(grid_points$X)
+  for (i in 1:n_iter){#length(grid_points$X)
     gridX = grid_points[i, 1]
     gridY = grid_points[i, 2]
     query <- paste("https://api.weather.gov/gridpoints/OKX/", as.character(gridX), ",", as.character(gridY), sep = "")
     raw_data = NA
-    # print(query)
-    # check = F
-    # raw_data = api_call(query, check)
     time = NA
     cnt = 1
-    # 
-    # 
     while (length(raw_data) == 1 && cnt < 4) {
       raw_data <- tryCatch(
         {
@@ -143,90 +136,96 @@ call_api_2 <- function(){
       cnt = cnt + 1
     }
     if (length(raw_data) != 1){
-      temp = raw_data$properties$temperature$values$value
-      rh = raw_data$properties$relativeHumidity$values$value
-      maxTemperature = raw_data$properties$maxTemperature$values$value
-      minTemperature = raw_data$properties$minTemperature$values$value
-      apparentTemperature = raw_data$properties$apparentTemperature$values$value
+      # temp = raw_data$properties$temperature$values$value
+      temp = raw_data$properties$temperature$values
+      t <- paste(substring(temp$validTime, 1, 10)," ",
+        substring(temp$validTime, 12,16),sep = "")
+      tempdf <- merge(timedf, temp, by="validTime", all=T)
+      tempdf$value <- na.locf(tempdf$value)
+      # print(a$value[1:72])
       
-      dewpoint = raw_data$properties$dewpoint$values$value
-      wetBulbGlobeTemperature = raw_data$properties$wetBulbGlobeTemperature$values$value
-      heatIndex = raw_data$properties$heatIndex$values$value
-      windChill = raw_data$properties$windChill$values$value
-      skyCover = raw_data$properties$maxTemperature$values$value
-      windDirection = raw_data$properties$windDirection$values$value
-      windSpeed = raw_data$properties$windSpeed$values$value
-      windGust = raw_data$properties$windGust$values$value
-      probabilityOfPrecipitation = raw_data$properties$probabilityOfPrecipitation$values$value
-      quantitativePrecipitation = raw_data$properties$quantitativePrecipitation$values$value
-      iceAccumulation = raw_data$properties$iceAccumulation$values$value
-      snowfallAmount = raw_data$properties$snowfallAmount$values$value
-      visibility = raw_data$properties$visibility$values$value
-      lightningActivityLevel = raw_data$properties$lightningActivityLevel$values$value
+      rh = raw_data$properties$relativeHumidity$values
+      t <- paste(substring(rh$validTime, 1, 10)," ",
+                 substring(rh$validTime, 12,16),sep = "")
+      rhdf <- merge(timedf, rh, by="validTime", all=T)
+      rhdf$value <- na.locf(rhdf$value)
+      
+      windSpeed = raw_data$properties$windSpeed$values
+      t <- paste(substring(windSpeed$validTime, 1, 10)," ",
+                 substring(windSpeed$validTime, 12,16),sep = "")
+      windSpeeddf <- merge(timedf, windSpeed, by="validTime", all=T)
+      windSpeeddf$value <- na.locf(windSpeeddf$value)
+      
+      
+      # maxTemperature = raw_data$properties$maxTemperature$values$value
+      # minTemperature = raw_data$properties$minTemperature$values$value
+      # apparentTemperature = raw_data$properties$apparentTemperature$values$value
+      # 
+      # dewpoint = raw_data$properties$dewpoint$values$value
+      # wetBulbGlobeTemperature = raw_data$properties$wetBulbGlobeTemperature$values$value
+      # heatIndex = raw_data$properties$heatIndex$values$value
+      # windChill = raw_data$properties$windChill$values$value
+      # skyCover = raw_data$properties$maxTemperature$values$value
+      # windDirection = raw_data$properties$windDirection$values$value
+      # windSpeed = raw_data$properties$windSpeed$values$value
+      # windGust = raw_data$properties$windGust$values$value
+      # probabilityOfPrecipitation = raw_data$properties$probabilityOfPrecipitation$values$value
+      # quantitativePrecipitation = raw_data$properties$quantitativePrecipitation$values$value
+      # iceAccumulation = raw_data$properties$iceAccumulation$values$value
+      # snowfallAmount = raw_data$properties$snowfallAmount$values$value
+      # visibility = raw_data$properties$visibility$values$value
+      # lightningActivityLevel = raw_data$properties$lightningActivityLevel$values$value
 
       sr = Polygon(cbind(raw_data$geometry$coordinates[,,1], 
                          raw_data$geometry$coordinates[,,2]))
       
       srs = Polygons(list(sr), paste(i))
       poly = append(poly, srs)
-      # print(length(temp))
-
-
-      temp_data[i,] = temp[1:60]
-      rh_data[i,] = rh[1:60]
-      minTemperature_data[i,] = minTemperature[1:8]
-      maxTemperature_data[i,] = maxTemperature[1:8]
-      dewpoint_data[i,] <- dewpoint[1:30]
+      
+      temp_data[i,] = tempdf$value[1:72]
+      
+      
+      
+      rh_data[i,] = rhdf$value[1:72]
+      # minTemperature_data[i,] = minTemperature[1:8]
+      # maxTemperature_data[i,] = maxTemperature[1:8]
+      # dewpoint_data[i,] <- dewpoint[1:30]
       # wetBulbGlobeTemperature_data[i,] <- wetBulbGlobeTemperature[1:60]
-      heatIndex_data[i,] <- heatIndex[1:60]
+      # heatIndex_data[i,] <- heatIndex[1:60]
       # windChill_data[i,] <- windChill[1:60]
       
-      skyCover_data[i,] <- skyCover[1:60]
-      windDirection_data[i,] <- windDirection[1:60]
-      windSpeed_data[i,] <- windSpeed[1:30]
-      windGust_data[i,] <- windGust[1:60]
-      probabilityOfPrecipitation_data[i,] <- probabilityOfPrecipitation[1:30]
-      quantitativePrecipitation_data[i,] <- quantitativePrecipitation[1:10]
-      iceAccumulation_data[i,] <- iceAccumulation[1:10]
-      snowfallAmount_data[i,] <- snowfallAmount[1:10]
-      visibility_data[i,] <- visibility[1:3]
-      lightningActivityLevel_data[i,] <- lightningActivityLevel[1:2]
+      # skyCover_data[i,] <- skyCover[1:60]
+      # windDirection_data[i,] <- windDirection[1:60]
+      windSpeed_data[i,] <- windSpeeddf$value[1:48]
+      # windGust_data[i,] <- windGust[1:60]
+      # probabilityOfPrecipitation_data[i,] <- probabilityOfPrecipitation[1:30]
+      # quantitativePrecipitation_data[i,] <- quantitativePrecipitation[1:10]
+      # iceAccumulation_data[i,] <- iceAccumulation[1:10]
+      # snowfallAmount_data[i,] <- snowfallAmount[1:10]
+      # visibility_data[i,] <- visibility[1:3]
+      # lightningActivityLevel_data[i,] <- lightningActivityLevel[1:2]
 
       success_cnt = success_cnt + 1
+      
+      
     }
-    # setTxtProgressBar(pb,i)
-  }
 
+    
+  }
+  # close(pb)
   sp <- SpatialPolygons(poly, 1:success_cnt)
-  dfd <- data.frame(temp_data[,1],
-                    rh_data[,1], 
-                    maxTemperature_data[,1], 
-                    minTemperature_data[,1],
-                    dewpoint_data[,1],
-                    heatIndex_data[,1],
-                    skyCover_data[,1],
-                    probabilityOfPrecipitation_data[,1],
-                    quantitativePrecipitation_data[,1],
-                    iceAccumulation_data[,1],
-                    snowfallAmount_data[,1],
-                    visibility_data[,1],
-                    lightningActivityLevel_data[,1]
-                    )
+  dfd <- data.frame(cbind(temp_data, rh_data, windSpeed_data))
+  colnames(dfd) <- c(paste("temp", validTime), paste("rh", validTime), 
+                     paste("windSpeed", validTime[1:dim(windSpeed_data)[2]]))
+  
   
   dfdt <- dfd[!is.na(dfd[,1]),]
-  
-  colnames(dfdt) <- c("temp", "rh",
-                      "maxTemp", "minTemp",
-                      "dewpoint",
-                      "heatIndex", "skyCover","probabilityOfPrecipitation",
-                      "quantitativePrecipitation", "iceAccumulation",
-                      "snowfallAmount", "visibility",
-                      "lightningActivityLevel")
 
-  Xval <- grid_points$X[!is.na(dfd[,1])]
-  Yval <- grid_points$Y[!is.na(dfd[,1])]
+
+  Xval <- grid_points$X#[!is.na(dfd[,1])]
+  Yval <- grid_points$Y#[!is.na(dfd[,1])]
   
-  sps <- SpatialPolygonsDataFrame(sp, data.frame(dfdt, X = Xval, Y=Yval, 
+  sps <- SpatialPolygonsDataFrame(sp, data.frame(dfdt,# X = Xval, Y=Yval, 
                                              row.names = row.names(sp)))
   return(sps)
 }
@@ -420,11 +419,14 @@ api_warning_call <- function(){
 }
 
 api_warning_call_2 <- function(){
-  zones = c("NYZ072", "NYZ073", "NYZ074", "NYZ075", "NYZ176", "NYZ178",
-            "ANZ335", "ANZ338", "ANZ355")
+  zones = c("NYZ072", "NYZ073", "NYZ074", "NYZ075", "NYZ176", "NYZ178")
+            # "ANZ335", "ANZ338", "ANZ355")
   alerts = c()
   shaps = c()
   query <- "https://api.weather.gov/alerts/active?zone=NYZ072,NYZ073,NYZ074,NYZ075,NYZ176,NYZ178,ANZ335,ANZ355,ANZ338"
+  query <- "https://api.weather.gov/alerts/active?zone=NYZ072,NYZ073,NYZ074,NYZ075,NYZ176,NYZ178"
+  
+  
   cnt = 1
   raw_data = NA
   while (length(raw_data) == 1 && cnt < 8) {
@@ -456,6 +458,10 @@ api_warning_call_2 <- function(){
   } else {
     num_alerts = length(raw_data$features$geometry$type)
     check = raw_data$features$geometry$type
+  }
+  
+  if (num_alerts == 0){
+    return(NULL)
   }
   
   poly = list()

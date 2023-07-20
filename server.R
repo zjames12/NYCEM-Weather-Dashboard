@@ -47,7 +47,7 @@ function(input, output, session) {
   output$mapPlot <- renderLeaflet({
     # api_data_plot(getData(), getNYCMap(), input$layer)
     # field = input$layer
-    layer_data = getData()
+    # layer_data = getData()
     
     
     m <- leaflet() %>%
@@ -63,9 +63,37 @@ function(input, output, session) {
       fitBounds(-74.302575, 40.496949, -73.738228, 40.883178) %>%
       
       addProviderTiles(providers$CartoDB.PositronOnlyLabels, 
-                       options = pathOptions(pane = "labels"))
+                       options = pathOptions(pane = "labels")) %>%
+      addPolylines(data = getNYCMap(),
+                   weight = 1,
+                   options = pathOptions(pane = "polylines"))
       # leaflet::addLegend("bottomright",pal = pal, values = legend_values,
       #                    opacity = 1, title = legend_title)
+    m
+  })
+  
+  output$windPlot <- renderLeaflet({
+    # api_data_plot(getData(), getNYCMap(), input$layer)
+    # field = input$layer
+    layer_data = getData()
+    
+    
+    m <- leaflet() %>%
+      addMapPane("background_map", zIndex = 410) %>%  
+      addMapPane("polygons", zIndex = 420) %>%        
+      addMapPane("polylines", zIndex = 430) %>%
+      addMapPane("labels", zIndex = 440) %>%
+      addProviderTiles(providers$CartoDB.Positron,
+                       layerId = "background_map",
+                       options = pathOptions(pane = "background_map")
+      ) %>%
+      fitBounds(-74.302575, 40.496949, -73.738228, 40.883178) %>%
+      
+      addProviderTiles(providers$CartoDB.PositronOnlyLabels, 
+                       options = pathOptions(pane = "labels")) %>%
+      addPolylines(data = getNYCMap(),
+                   weight = 1,
+                   options = pathOptions(pane = "polylines"))
     m
   })
   
@@ -81,27 +109,34 @@ function(input, output, session) {
             "Coastal Flood Advisory"="#7cfc00",
             "Flood Watch"="#2e8b57",
             "Coastal Flood Statement"="#6b8e23",
-            "Hazardous Weather Outlook"="#eee8aa")
+            "Hazardous Weather Outlook"="#eee8aa",
+            "Severe Thunderstorm Warning"="#ffa500",
+            "Flash Flood Warning"="#8b0000",
+            "Flood Warning"="#00ff00",
+            "Tornado Watch"="#ffff00",
+            "Flood Advisory"="#00ff7f ")
     
     
     
     m <- leaflet() %>%
       addProviderTiles(providers$CartoDB.PositronNoLabels)
-    for (i in 1:length(alert_data$alerts)){
-      labels <- sprintf(
-        "<strong>%s</strong>",
-        alert_data$alerts[[i]]
-      ) %>% lapply(htmltools::HTML)
-      m <- leaflet::addPolygons(m, data = alert_data$shapes[[i]],
-                                fillColor = pal[[alert_data$alerts[[i]]]], fillOpacity = .9,
-                                color = pal[[alert_data$alerts[[i]]]],
-                                weight = 1,
-                                label = labels,
-                                labelOptions = labelOptions(
-                                  style = list("font-weight" = "normal", padding = "3px 8px"),
-                                  textsize = "15px",
-                                  direction = "auto")
-      )
+    if (!is.null(alert_data)) {
+      for (i in 1:length(alert_data$alerts)){
+        labels <- sprintf(
+          "<strong>%s</strong>",
+          alert_data$alerts[[i]]
+        ) %>% lapply(htmltools::HTML)
+        m <- leaflet::addPolygons(m, data = alert_data$shapes[[i]],
+                                  fillColor = pal[[alert_data$alerts[[i]]]], fillOpacity = .9,
+                                  color = pal[[alert_data$alerts[[i]]]],
+                                  weight = 1,
+                                  label = labels,
+                                  labelOptions = labelOptions(
+                                    style = list("font-weight" = "normal", padding = "3px 8px"),
+                                    textsize = "15px",
+                                    direction = "auto")
+        )
+      }
     }
     m <- addPolylines(m, data = nyc_data,
                       weight = .5, color = "blue")
@@ -139,12 +174,46 @@ function(input, output, session) {
     colorNumeric(input$colors, quakes$mag)
   })
   
+  # observe expressions for main map
   observe({
     field = input$layer
-    layer_data = getData()
-    
     if (field == "Temperature"){
-      data_to_plot = c_to_f(layer_data$temp)
+      #-20,-10, ..
+      # pal <- colorNumeric(palette = c("#93b1d7", "#7f9bc3", "#607ba6",
+      #                                 "#4d6591", "#39517f", "#26436f",
+      #                                 "#275b80", "#287593", "#648d89",
+      #                                 "#aba87d", "#c19d61", "#be704c",
+      #                                 "#9f294c", "#6e1531", "#3d0216"), 
+      #                     domain = c(120, -20), reverse = T)
+      pal <- colorNumeric(palette = "Spectral", domain = c(120, -20), reverse = T)
+      legend_title = "&degF"
+      legend_values = c(120, -20)
+    } 
+    else if (field == "Relative Humidity") {
+      pal <- colorNumeric(palette = "Greens", domain = c(1,100))
+      legend_title <- "&#37"
+      legend_values = c(1,100)
+    } 
+    leafletProxy("mapPlot", data = layer_data) %>%
+      clearControls() %>%
+      leaflet::addLegend("bottomright",pal = pal, values = legend_values,
+                         opacity = 1, title = legend_title)
+  })
+  
+  observe({
+    field = input$layer
+    timestamp = input$timeval
+    timestamp <- with_tz(timestamp, "America/New_York")
+    # print(timestamp)
+    layer_data = getData()
+    if (hour(timestamp) >= 10){
+      key = paste(format(as.POSIXct(timestamp), "%Y.%m.%d."), hour(timestamp), ".00.00", sep = "")
+    } else {
+      key = paste(format(as.POSIXct(timestamp), "%Y.%m.%d."), "0", hour(timestamp), ".00.00", sep = "")
+    }
+    # print(paste("temp.",key,sep = ""))
+    if (field == "Temperature"){
+      data_to_plot = c_to_f(unlist(layer_data[[paste("temp.",key,sep = "")]]))#c_to_f(layer_data$temp)
       labels <- sprintf(
         "<strong>%.0f&degF</strong>",
         data_to_plot
@@ -161,10 +230,12 @@ function(input, output, session) {
       legend_values = c(120, -20)
     } 
     else if (field == "Relative Humidity") {
-      data_to_plot = layer_data$rh
+      # data_to_plot = layer_data$rh
+      data_to_plot = layer_data[[paste("rh.",key,sep = "")]]#c_to_f(layer_data$temp)
+      
       labels <- sprintf(
         "<strong>%.0f&#37</strong>",
-        layer_data$rh
+        data_to_plot
       ) %>% lapply(htmltools::HTML)
       
       pal <- colorNumeric(palette = "Greens", domain = c(1,100))
@@ -303,8 +374,8 @@ function(input, output, session) {
       legend_values = data_to_plot
     }
     leafletProxy("mapPlot", data = layer_data) %>%
-      clearShapes() %>%
-      clearControls() %>%
+      removeShape("polygons") %>%
+      # clearControls() %>%
     addPolygons(data = layer_data,
                 fillColor = pal(data_to_plot),
                 fillOpacity = 0.7,
@@ -324,15 +395,16 @@ function(input, output, session) {
                 style = list("font-weight" = "normal", padding = "3px 8px"),
                 textsize = "15px",
                 direction = "auto"),
-                options = pathOptions(pane = "polygons")) %>%
-      addPolylines(data = getNYCMap(),
-                   weight = 1,
-                   options = pathOptions(pane = "polylines")) %>%
-      leaflet::addLegend("bottomright",pal = pal, values = legend_values,
-                         opacity = 1, title = legend_title)
+                options = pathOptions(pane = "polygons")) #%>%
+      # addPolylines(data = getNYCMap(),
+      #              weight = 1,
+      #              options = pathOptions(pane = "polylines")) %>%
+      # leaflet::addLegend("bottomright",pal = pal, values = legend_values,
+      #                    opacity = 1, title = legend_title)
                          # labFormat = labelFormat(transform = function(x) sort(x, decreasing = TRUE)))
   })
   
+  # observe expressions for main map style (e.g. satellite)
   observe({
     if (input$mapType == "Default"){
       leafletProxy("mapPlot", data = getData()) %>%
@@ -373,6 +445,68 @@ function(input, output, session) {
 
 
   })
+  
+  # observe expressions for wind map
+  observe({
+    
+    pal <- colorNumeric(palette = "BuPu", domain = c(0,8))
+    legend_title <- "mph"
+    legend_values = c(0,20)
+    
+    leafletProxy("windPlot", data = layer_data) %>%
+      clearControls() %>%
+      leaflet::addLegend("bottomright",pal = pal, values = legend_values,
+                         opacity = 1, title = legend_title)
+  })
+  
+  observe({
+    field = input$layer
+    timestamp = input$windtime
+    timestamp <- with_tz(timestamp, "America/New_York")
+    # print(timestamp)
+    layer_data = getData()
+    if (hour(timestamp) >= 10){
+      key = paste(format(as.POSIXct(timestamp), "%Y.%m.%d."), hour(timestamp), ".00.00", sep = "")
+    } else {
+      key = paste(format(as.POSIXct(timestamp), "%Y.%m.%d."), "0", hour(timestamp), ".00.00", sep = "")
+    }
+    # print(paste("temp.",key,sep = ""))
+
+    data_to_plot = km_to_mi(layer_data[[paste("windSpeed.",key,sep = "")]])
+    labels <- sprintf(
+      "<strong>%.2f mph</strong>",
+      data_to_plot
+    ) %>% lapply(htmltools::HTML)
+    
+    pal <- colorNumeric(palette = "BuPu", domain = c(0,20))
+    legend_title <- "in"
+    legend_values = c(0,20)
+    
+
+    leafletProxy("windPlot", data = layer_data) %>%
+      removeShape("polygons") %>%
+      addPolygons(data = layer_data,
+                  fillColor = pal(data_to_plot),
+                  fillOpacity = 0.7,
+                  weight = 2,
+                  opacity = .01,
+                  color = "white",
+                  dashArray = "3",
+                  highlightOptions = highlightOptions(
+                    weight = .1,
+                    color = "#666",
+                    dashArray = "",
+                    fillOpacity = .7,
+                    fillColor = "#666",
+                    opacity = 1),
+                  label = labels,
+                  labelOptions = labelOptions(
+                    style = list("font-weight" = "normal", padding = "3px 8px"),
+                    textsize = "15px",
+                    direction = "auto"),
+                  options = pathOptions(pane = "polygons")) #%>%
+  })
+  
   
   
   lastUpdateTime <- reactive({
