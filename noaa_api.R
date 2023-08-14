@@ -15,6 +15,9 @@ suppressWarnings(suppressMessages(library(dygraphs, quietly = T, warn.conflicts 
 suppressWarnings(suppressMessages(library(xts, quietly = T, warn.conflicts = F)))
 library(lubridate)
 library(zoo)
+library(parallel)
+
+
 # 34, 38
 nyc_outline <- function(){
   spdf <- geojson_read("Borough Boundaries.geojson",  what = "sp")
@@ -71,7 +74,7 @@ api_call <- function(X, Y, num_attempts = 10){
 
 call_api_2 <- function(){
   
-  start_time <- ceiling_date(Sys.time(), unit = "hour")
+  start_time <- ceiling_date(with_tz(Sys.time(), "America/New_York"), unit = "hour")
   end_time <- start_time + hours(71)
   validTime <- seq(start_time, end_time, by = "hours")
   timedf <- data.frame(validTime)

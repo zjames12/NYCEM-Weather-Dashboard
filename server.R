@@ -1,14 +1,14 @@
-library(shiny)
-library(shinydashboard)
-library(leaflet)
-library(formattable)
+suppressWarnings(suppressMessages(library(shiny, quietly = T, warn.conflicts = F)))
+suppressWarnings(suppressMessages(library(shinydashboard, quietly = T, warn.conflicts = F)))
+suppressWarnings(suppressMessages(library(leaflet, quietly = T, warn.conflicts = F)))
+suppressWarnings(suppressMessages(library(formattable, quietly = T, warn.conflicts = F)))
 
 source("noaa_api.R")
 
 
 function(input, output, session) {
   getData <- reactive({
-    input$refresh # Refresh if button clicked
+    # input$refresh # Refresh if button clicked
     
     # Get interval (minimum 30)
     # interval <- max(as.numeric(input$interval), 30)
@@ -204,16 +204,18 @@ function(input, output, session) {
     field = input$layer
     timestamp = input$timeval
     timestamp <- with_tz(timestamp, "America/New_York")
-    # print(timestamp)
+    
     layer_data = getData()
+    warning(colnames(as.data.frame(layer_data))[1])
+    warning(timestamp)
     if (hour(timestamp) >= 10){
       key = paste(format(as.POSIXct(timestamp), "%Y.%m.%d."), hour(timestamp), ".00.00", sep = "")
     } else {
       key = paste(format(as.POSIXct(timestamp), "%Y.%m.%d."), "0", hour(timestamp), ".00.00", sep = "")
     }
-    # print(paste("temp.",key,sep = ""))
+    warning(paste("temp.",key,sep = ""))
     if (field == "Temperature"){
-      data_to_plot = c_to_f(unlist(layer_data[[paste("temp.",key,sep = "")]]))#c_to_f(layer_data$temp)
+      data_to_plot = c_to_f(layer_data[[paste("temp.",key,sep = "")]])#c_to_f(layer_data$temp)
       labels <- sprintf(
         "<strong>%.0f&degF</strong>",
         data_to_plot
@@ -447,65 +449,68 @@ function(input, output, session) {
   })
   
   # observe expressions for wind map
-  observe({
-    
-    pal <- colorNumeric(palette = "BuPu", domain = c(0,8))
-    legend_title <- "mph"
-    legend_values = c(0,20)
-    
-    leafletProxy("windPlot", data = layer_data) %>%
-      clearControls() %>%
-      leaflet::addLegend("bottomright",pal = pal, values = legend_values,
-                         opacity = 1, title = legend_title)
-  })
+  # observe({
+  #   
+  #   pal <- colorNumeric(palette = "BuPu", domain = c(0,20))
+  #   legend_title <- "mph"
+  #   layer_data = getData()
+  #   legend_values = c(0,20)
+  #   
+  #   leafletProxy("windPlot", data = layer_data) %>%
+  #     clearControls() %>%
+  #     leaflet::addLegend("bottomright",pal = pal, values = legend_values,
+  #                        opacity = 1, title = legend_title)
+  # })
   
-  observe({
-    field = input$layer
-    timestamp = input$windtime
-    timestamp <- with_tz(timestamp, "America/New_York")
-    # print(timestamp)
-    layer_data = getData()
-    if (hour(timestamp) >= 10){
-      key = paste(format(as.POSIXct(timestamp), "%Y.%m.%d."), hour(timestamp), ".00.00", sep = "")
-    } else {
-      key = paste(format(as.POSIXct(timestamp), "%Y.%m.%d."), "0", hour(timestamp), ".00.00", sep = "")
-    }
-    # print(paste("temp.",key,sep = ""))
-
-    data_to_plot = km_to_mi(layer_data[[paste("windSpeed.",key,sep = "")]])
-    labels <- sprintf(
-      "<strong>%.2f mph</strong>",
-      data_to_plot
-    ) %>% lapply(htmltools::HTML)
-    
-    pal <- colorNumeric(palette = "BuPu", domain = c(0,20))
-    legend_title <- "in"
-    legend_values = c(0,20)
-    
-
-    leafletProxy("windPlot", data = layer_data) %>%
-      removeShape("polygons") %>%
-      addPolygons(data = layer_data,
-                  fillColor = pal(data_to_plot),
-                  fillOpacity = 0.7,
-                  weight = 2,
-                  opacity = .01,
-                  color = "white",
-                  dashArray = "3",
-                  highlightOptions = highlightOptions(
-                    weight = .1,
-                    color = "#666",
-                    dashArray = "",
-                    fillOpacity = .7,
-                    fillColor = "#666",
-                    opacity = 1),
-                  label = labels,
-                  labelOptions = labelOptions(
-                    style = list("font-weight" = "normal", padding = "3px 8px"),
-                    textsize = "15px",
-                    direction = "auto"),
-                  options = pathOptions(pane = "polygons")) #%>%
-  })
+  # observe({
+  #   field = input$layer
+  #   timestamp = input$windtime
+  #   timestamp <- with_tz(timestamp, "America/New_York")
+  #   # print(timestamp)
+  #   layer_data = getData()
+  #   if (hour(timestamp) >= 10){
+  #     key = paste(format(as.POSIXct(timestamp), "%Y.%m.%d."), hour(timestamp), ".00.00", sep = "")
+  #   } else {
+  #     key = paste(format(as.POSIXct(timestamp), "%Y.%m.%d."), "0", hour(timestamp), ".00.00", sep = "")
+  #   }
+  #   # print(paste("temp.",key,sep = ""))
+  # 
+  #   data_to_plot = km_to_mi(layer_data[[paste("windSpeed.",key,sep = "")]])
+  #   labels <- sprintf(
+  #     "<strong>%.2f mph</strong>",
+  #     data_to_plot
+  #   ) %>% lapply(htmltools::HTML)
+  #   
+  #   cl = max(20, round(max(as.data.frame(df)[,145:192]), digits -1)) 
+  #   
+  #   pal <- colorNumeric(palette = "BuPu", domain = c(0,cl))
+  #   legend_title <- "in"
+  #   legend_values = c(0,cl)
+  #   
+  # 
+  #   leafletProxy("windPlot", data = layer_data) %>%
+  #     removeShape("polygons") %>%
+  #     addPolygons(data = layer_data,
+  #                 fillColor = pal(data_to_plot),
+  #                 fillOpacity = 0.7,
+  #                 weight = 2,
+  #                 opacity = .01,
+  #                 color = "white",
+  #                 dashArray = "3",
+  #                 highlightOptions = highlightOptions(
+  #                   weight = .1,
+  #                   color = "#666",
+  #                   dashArray = "",
+  #                   fillOpacity = .7,
+  #                   fillColor = "#666",
+  #                   opacity = 1),
+  #                 label = labels,
+  #                 labelOptions = labelOptions(
+  #                   style = list("font-weight" = "normal", padding = "3px 8px"),
+  #                   textsize = "15px",
+  #                   direction = "auto"),
+  #                 options = pathOptions(pane = "polygons")) #%>%
+  # })
   
   
   
@@ -600,6 +605,45 @@ function(input, output, session) {
       return(s)
     }
     # return("Testing")
+  })
+  
+  output$tempWarningText <- renderUI({
+    day = "Enter manually"
+    hightemp = "Enter manually"
+    lowtemp = "Enter manually"
+    
+    HTML(paste("<strong>", day, "</strong>", "<br/>", 
+               "<strong>", "High Heat", "</strong>", "<br/>",
+               hightemp, "<br/>",
+               "<strong>", "Extreme Cold", "</strong>", "<br/>",
+               lowtemp))
+  })
+  
+  output$windWarningText <- renderUI({
+    day = "Enter manually"
+    direction = "Enter manually"
+    speed = "Enter manually"
+    
+    HTML(paste("<strong>", day, "</strong>", "<br/>", 
+               "<strong>", "Direction", "</strong>", "<br/>",
+               direction, "<br/>",
+               "<strong>", "Speed", "</strong>", "<br/>",
+               speed))
+  })
+  
+  output$coastalWarningText <- renderUI({
+    day = "Enter manually"
+    severity = "Enter manually"
+    timeloc = "Enter manually"
+    rip = "Enter manually"
+    
+    HTML(paste("<strong>", day, "</strong>", "<br/>", 
+               "<strong>", "Severity", "</strong>", "<br/>",
+               severity, "<br/>",
+               "<strong>", "Time and Location", "</strong>", "<br/>",
+               timeloc, "<br/>",
+               "<strong>", "Rip Current Risk", "</strong>", "<br/>",
+               rip))
   })
   
   output$boroughManattanHourly <- renderDygraph({
