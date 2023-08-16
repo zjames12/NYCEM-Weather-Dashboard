@@ -23,7 +23,7 @@ Log files can be found in the `/var/log/shiny-server` directory. Logs can be tur
 
 ## Contact
 
-![logos](/assets/logos.png)
+![logos](/assets/comb.png)
 
 This project was a collaboration between the Cornell University Department of Statistics and Data Science, Cornell Tech's Public Interest Tech Initiative, and the New York City Department of Emergency Management. Funding was provided in part by the Siegel Family Foundation.
 
