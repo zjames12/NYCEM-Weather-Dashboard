@@ -20,7 +20,7 @@ library(parallel)
 
 # 34, 38
 nyc_outline <- function(){
-  spdf <- geojson_read("Borough Boundaries.geojson",  what = "sp")
+  spdf <- geojson_read("data/Borough Boundaries.geojson",  what = "sp")
   # spdf_fortified <- tidy(spdf)
   return(spdf)
 }
@@ -79,7 +79,7 @@ call_api_2 <- function(){
   validTime <- seq(start_time, end_time, by = "hours")
   timedf <- data.frame(validTime)
   
-  grid_points = read.csv("nyc_grid_locs.csv")
+  grid_points = read.csv("data/nyc_grid_locs.csv")
 
   num_grids = length(grid_points$X)
   temp_data <- matrix(ncol = 72, nrow = num_grids)
