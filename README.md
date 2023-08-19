@@ -23,9 +23,9 @@ The application is currently hosted on a NYCEM AWS EC2 instance named `Weather_D
 
 Log files can be found in the `/var/log/shiny-server` directory. Logs can be turned off by modifying the configuration file `/etc/shiny-server/shiny-server.conf`. Helpful guides on hosting the app can be found [here](https://www.charlesbordet.com/en/guide-shiny-aws/#how-to-install-shiny-server) and [here](https://towardsdatascience.com/how-to-host-a-r-shiny-app-on-aws-cloud-in-7-simple-steps-5595e7885722).
 
-### Updating the Alert Boxes
+### Updating the Alert Boxes and Notes
 
-To update the values of the four alert boxes at the bottom of the dashboard edit the `output$tempWarningText`, `output$windWarningText`, and `output$coastalWarningText` functions. A function needs to be created for the precipitation section.
+To update the values of the four alert boxes at the bottom of the dashboard edit the `output$tempWarningText`, `output$windWarningText`, and `output$coastalWarningText` functions in the `server.R` file. A function needs to be created for the precipitation section. The notes can be updating by editing the paragraph on line 47 of `ui.R`.
 
 ## TODOs
 
