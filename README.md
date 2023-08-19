@@ -5,7 +5,7 @@
 
 This web application provides up to date meteorological information for New York City.
 
-![overview](/assets/map.png)
+<!-- ![overview](/assets/map.png) -->
 
 ## Running the application
 
