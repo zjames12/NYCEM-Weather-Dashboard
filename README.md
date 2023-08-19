@@ -43,6 +43,10 @@ A more sophisticated design could help reduce latency. One possible design would
 
 ![design](/assets/two.png)
 
+### Hosting
+
+A DNS server needs to be set up to give the dashboard a proper URL. Authentication needs to be added to ensure that it can only be accessed by NYC government employees.
+
 ## Acknowledgements
 
 ![logos](/assets/comb.png)
