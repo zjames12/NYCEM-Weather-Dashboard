@@ -5,6 +5,8 @@
 
 This web application provides up to date meteorological information for New York City.
 
+![overview](/assets/map.png)
+
 ## Running the application
 
 The application is currently hosted at http://18.221.238.149:3838/NYCEM-Weather-Dashboard/. It can also be run locally by running the `main.R` file after installing all dependencies.
@@ -21,11 +23,33 @@ The application is currently hosted on a NYCEM AWS EC2 instance named `Weather_D
 
 Log files can be found in the `/var/log/shiny-server` directory. Logs can be turned off by modifying the configuration file `/etc/shiny-server/shiny-server.conf`. Helpful guides on hosting the app can be found [here](https://www.charlesbordet.com/en/guide-shiny-aws/#how-to-install-shiny-server) and [here](https://towardsdatascience.com/how-to-host-a-r-shiny-app-on-aws-cloud-in-7-simple-steps-5595e7885722).
 
-## Contact
+### Updating the Alert Boxes
+
+To update the values of the four alert boxes at the bottom of the dashboard edit the `output$tempWarningText`, `output$windWarningText`, and `output$coastalWarningText` functions. A function needs to be created for the precipitation section.
+
+## TODOs
+
+### Frontend
+
+Additional layers need to be added to the map. Text needs to be added to the precipitation warning box.
+
+### Backend
+
+The dashboard loads slowly because it queries the API every time it is loaded. The current AWS design consists of a EC2 instance that the performs all aspects of the dashboard.
+
+![design](/assets/one.png)
+
+A more sophisticated design could help reduce latency. One possible design would involve a Lambda that calls the API intermittently and stores it in a S3 bucket. When the EC2 is invoked by a user it would then use the data stored in the S3 bucket instead of making an API call.
+
+![design](/assets/two.png)
+
+## Acknowledgements
 
 ![logos](/assets/comb.png)
 
 This project was a collaboration between the Cornell University Department of Statistics and Data Science, Cornell Tech's Public Interest Tech Initiative, and the New York City Department of Emergency Management. Funding was provided in part by the Siegel Family Foundation.
+
+## Contact
 
 For questions or comments contact Zachary James, zj37@cornell.edu or Joshua Rapp jrapp@oem.nyc.gov.
 
