@@ -1,3 +1,10 @@
+## ⚠️ Repository Status: No Longer Maintained
+
+**This repository is no longer maintained.**  
+Issues and pull requests may not be reviewed.  
+Feel free to fork the project if you find it useful.
+
+
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://img.shields.io/badge/license-MIT-blue.svg)
 
 
